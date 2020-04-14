@@ -1,0 +1,25 @@
+sudo: required
+
+services:
+  - docker
+  
+before_install:
+  - docker build -t thiyaga/react-test -f ./client/Dockerfile.dev ./client
+  
+script:
+  - docker run -e CI=true thiyaga/react-test npm test
+  
+after_success:
+  - docker build -t thiyaga/multi-client ./client
+  - docker build -t thiyaga/multi-nginx ./nginx
+  - docker build -t thiyaga/multi-server ./server
+  - docker build -t thiyaga/multi-worker ./worker
+#docker hub steps login
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push thiyaga/multi-client
+  - docker push thiyaga/multi-nginx
+  - docker push thiyaga/multi-server
+  - docker push thiyaga/multi-worker
+
+
+  
