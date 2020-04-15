@@ -7,7 +7,7 @@ before_install:
 #  - docker build -t thiyaga/react-test -f ./client/Dockerfile.dev ./client
   
 script:
-  - docker run -e CI=true thiyaga/react-test npm test
+#  - docker run -e CI=true thiyaga/react-test npm test
   
 after_success:
   - docker build -t thiyaga/multi-client ./client
